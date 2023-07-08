@@ -1,4 +1,5 @@
 /**
+ /**
  * Sample Skeleton for 'Scene.fxml' Controller Class
  */
 
@@ -15,7 +16,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-public class FXMLController {
+public class FXMLController { 
 
     private Model model;
 
@@ -35,10 +36,10 @@ public class FXMLController {
     private Button btnSimula; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbAnno"
-    private ComboBox<?> cmbAnno; // Value injected by FXMLLoader
+    private ComboBox<Integer> cmbAnno; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbSquadra"
-    private ComboBox<?> cmbSquadra; // Value injected by FXMLLoader
+    private ComboBox<String> cmbSquadra; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtResult"
     private TextArea txtResult; // Value injected by FXMLLoader
@@ -48,11 +49,25 @@ public class FXMLController {
 
     @FXML
     void handleCreaGrafo(ActionEvent event) {
+    	
+    	txtResult.clear();
+    	String str = cmbSquadra.getSelectionModel().getSelectedItem();
+ 
+    	this.model.creaGrafo(str);
+    	
+    	txtResult.appendText("Grafo creato\n");
+    	txtResult.appendText("#VERTICI: " + this.model.numeroVertici() + "\n");
+    	txtResult.appendText("#ARCHI: " + this.model.numeroArchi() + "\n");
+    	cmbAnno.getItems().addAll(this.model.listaAnni());
 
     }
 
     @FXML
     void handleDettagli(ActionEvent event) {
+    	
+    	int n = cmbAnno.getSelectionModel().getSelectedItem();
+    	txtResult.appendText(this.model.viciniVertice(n));
+    	
 
     }
 
@@ -70,11 +85,16 @@ public class FXMLController {
         assert cmbSquadra != null : "fx:id=\"cmbSquadra\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtTifosi != null : "fx:id=\"txtTifosi\" was not injected: check your FXML file 'Scene.fxml'.";
+        
+        
+        
 
     }
 
     public void setModel(Model model) {
         this.model = model;
+        cmbSquadra.getItems().clear();
+        cmbSquadra.getItems().addAll(this.model.listaTeam());
     }
 
 }
